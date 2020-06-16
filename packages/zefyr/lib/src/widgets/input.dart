@@ -196,4 +196,14 @@ class InputConnectionController implements TextInputClient {
   void showAutocorrectionPromptRect(int start, int end) {
     // TODO: implement showAutocorrectionPromptRect
   }
+
+  @override
+  void connectionClosed() {
+    if (hasConnection) {
+      _textInputConnection.connectionClosedReceived();
+      _textInputConnection = null;
+      _lastKnownRemoteTextEditingValue = null;
+      _sentRemoteValues.clear();
+    }
+  }
 }
