@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zefyr/zefyr.dart';
 
 import 'full_page.dart';
@@ -50,10 +51,18 @@ class _ViewScreen extends State<ViewScreen> {
             child: ZefyrView(
               document: doc,
               imageDelegate: CustomImageDelegate(),
+              attrDelegate: MyAttrDelegate(),
             ),
           )
         ],
       ),
     );
+  }
+}
+
+class MyAttrDelegate extends ZefyrAttrDelegate {
+  @override
+  void onLinkTap(String link) {
+    launch(link);
   }
 }

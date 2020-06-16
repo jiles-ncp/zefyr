@@ -54,10 +54,10 @@ import 'package:image_picker/image_picker.dart';
 class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
   @override
   Future<String> pickImage(ImageSource source) async {
-    final file = await ImagePicker.pickImage(source: source);
+    final file = await ImagePicker().getImage(source: source);
     if (file == null) return null;
     // We simply return the absolute path to selected file.
-    return file.uri.toString();
+    return file.path.toString();
   }
 }
 ```
@@ -86,10 +86,11 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
 
   @override
   Future<String> pickImage(ImageSource source) async {
-    final file = await ImagePicker.pickImage(source: source);
+    final file = await ImagePicker().getImage(source: source);
     if (file == null) return null;
     // Use my storage service to upload selected file. The uploadImage method
     // returns unique ID of newly uploaded image on my server.
+    
     final String imageId = await storage.uploadImage(file);
     return imageId;
   }
