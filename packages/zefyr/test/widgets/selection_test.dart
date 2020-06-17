@@ -86,8 +86,8 @@ void main() {
           'This House\nIs A Circus\n');
       expect(editor.controller.selection.extentOffset, 0);
 
-      RenderBox renderObject =
-          tester.firstRenderObject(find.byType(ZefyrEditableText));
+      var renderObject =
+          tester.firstRenderObject(find.byType(ZefyrEditableText)) as RenderBox;
       var offset = renderObject.localToGlobal(Offset.zero);
       offset = renderObject.localToGlobal(Offset.zero) + Offset(50.0, 1.0);
       await tester.tapAt(offset);

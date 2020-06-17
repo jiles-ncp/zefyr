@@ -81,7 +81,7 @@ class _FormEmbeddedScreenState extends State<FormEmbeddedScreen> {
     return [
       CheckedPopupMenuItem(
         value: _Options.darkTheme,
-        child: Text("Dark theme"),
+        child: Text('Dark theme'),
         checked: _darkTheme,
       ),
     ];

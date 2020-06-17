@@ -22,48 +22,50 @@ class TextColorButton extends StatelessWidget {
     final editor = toolbar.editor;
     final attribute = NotusAttribute.textColor;
 
-    var hasDelegate = editor.colorDelegate != null;
-    var isCollapsed = editor.selection.isCollapsed;
-    var hasAttribute = editor.selectionStyle.contains(attribute);
     final theme = Theme.of(context);
+
+    if (editor.colorDelegate == null) {
+      return SizedBox(
+        width: 0,
+        height: 0,
+      );
+    }
 
     return ZefyrButton.child(
       action: ZefyrToolbarAction.textColor,
       child: Icon(Icons.format_color_text),
-      onPressed: !hasAttribute && (!hasDelegate || isCollapsed)
-          ? null
-          : () async {
-              Color current;
-              if (hasAttribute) {
-                var value = editor.selectionStyle.value<String>(attribute);
+      onPressed: () async {
+        Color current;
+        if (editor.selectionStyle.contains(attribute)) {
+          var value = editor.selectionStyle.value<String>(attribute);
 
-                current = _hexStringToColor(value);
-              }
+          current = _hexStringToColor(value);
+        }
 
-              var currentSelection = editor.selection;
+        var currentSelection = editor.selection;
 
-              // editor loses focus with dialog
-              var picked = await editor.colorDelegate?.pickColor(context,
-                  current ?? theme.textTheme.bodyText1.color.withOpacity(1));
+        // editor loses focus with dialog
+        var picked = await editor.colorDelegate?.pickColor(
+            context, current ?? theme.textTheme.bodyText1.color.withOpacity(1));
 
-              // reset selection
-              editor.updateSelection(currentSelection);
+        // reset selection
+        editor.updateSelection(currentSelection);
 
-              if (picked == null) return;
+        if (picked == null) return;
 
-              if (picked is Color) {
-                if (picked == Colors.transparent) {
-                  editor.formatSelection(attribute.unset);
-                  return;
-                }
+        if (picked is Color) {
+          if (picked == Colors.transparent) {
+            editor.formatSelection(attribute.unset);
+            return;
+          }
 
-                print('picked color: $picked');
+          print('picked color: $picked');
 
-                var hex = '#${picked.value.toRadixString(16)}';
-                var attr = attribute.fromString(hex);
-                editor.formatSelection(attr);
-              }
-            },
+          var hex = '#${picked.value.toRadixString(16)}';
+          var attr = attribute.fromString(hex);
+          editor.formatSelection(attr);
+        }
+      },
     );
   }
 }
@@ -75,48 +77,54 @@ class TextHighlightButton extends StatelessWidget {
     final editor = toolbar.editor;
     final attribute = NotusAttribute.textBackground;
 
-    var hasDelegate = editor.colorDelegate != null;
-    var isCollapsed = editor.selection.isCollapsed;
+    if (editor.colorDelegate == null) {
+      return SizedBox(
+        width: 0,
+        height: 0,
+      );
+    }
+
     var hasAttribute =
         editor.selectionStyle.contains(NotusAttribute.textBackground);
 
     return ZefyrButton.icon(
       action: ZefyrToolbarAction.textBackground,
       icon: Icons.format_color_fill,
-      onPressed: !hasAttribute && (!hasDelegate || isCollapsed)
-          ? null
-          : () async {
-              Color current;
-              if (hasAttribute) {
-                var value = editor.selectionStyle.value<String>(attribute);
+      onPressed: () async {
+        Color current;
+        if (hasAttribute) {
+          var value = editor.selectionStyle.value<String>(attribute);
 
-                current = _hexStringToColor(value);
-              }
+          current = _hexStringToColor(value);
+        }
 
-              var currentSelection = editor.selection;
+        var currentSelection = editor.selection;
+        var collapsed = editor.selection.isCollapsed;
 
-              // editor loses focus with dialog
-              var picked = await editor.colorDelegate
-                  ?.pickColor(context, current ?? Colors.yellow);
+        // editor loses focus with dialog
+        var picked = await editor.colorDelegate
+            ?.pickColor(context, current ?? Colors.yellow);
 
-              // reset selection
-              editor.updateSelection(currentSelection);
+        // reset selection
+        if (!collapsed) {
+          editor.updateSelection(currentSelection);
+        }
 
-              if (picked == null) return;
+        if (picked == null) return;
 
-              if (picked is Color) {
-                if (picked == Colors.transparent) {
-                  editor.formatSelection(attribute.unset);
-                  return;
-                }
+        if (picked is Color) {
+          if (picked == Colors.transparent) {
+            editor.formatSelection(attribute.unset);
+            return;
+          }
 
-                print('picked color: $picked');
+          print('picked color: $picked');
 
-                var hex = '#${picked.value.toRadixString(16)}';
-                var attr = attribute.fromString(hex);
-                editor.formatSelection(attr);
-              }
-            },
+          var hex = '#${picked.value.toRadixString(16)}';
+          var attr = attribute.fromString(hex);
+          editor.formatSelection(attr);
+        }
+      },
     );
   }
 }

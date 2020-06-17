@@ -122,7 +122,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
 
   TextSpan buildText(BuildContext context, ZefyrScope scope) {
     final theme = ZefyrTheme.of(context);
-    final List<TextSpan> children = widget.node.children
+    final children = widget.node.children
         .map((node) => _segmentToTextSpan(node, theme, scope))
         .toList(growable: false);
     return TextSpan(style: widget.style, children: children);
@@ -138,7 +138,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
     if (attrs.contains(NotusAttribute.link)) {
       final tapGestureRecognizer = TapGestureRecognizer();
       tapGestureRecognizer.onTap = () {
-        print("delegate: ${scope.attrDelegate}");
+        print('delegate: ${scope.attrDelegate}');
         if (scope.attrDelegate?.onLinkTap != null) {
           scope.attrDelegate.onLinkTap(attrs.get(NotusAttribute.link).value);
         }

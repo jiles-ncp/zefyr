@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
@@ -115,7 +114,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
     return [
       CheckedPopupMenuItem(
         value: _Options.darkTheme,
-        child: Text("Dark theme"),
+        child: Text('Dark theme'),
         checked: _darkTheme,
       ),
     ];

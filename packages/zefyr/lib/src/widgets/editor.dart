@@ -184,6 +184,7 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
         mode: widget.mode,
         imageDelegate: _imageDelegate,
         attrDelegate: _attrDelegate,
+        colorDelegate: _colorDelegate,
         controller: widget.controller,
         focusNode: widget.focusNode,
         focusScope: FocusScope.of(context),
