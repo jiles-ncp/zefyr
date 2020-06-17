@@ -91,7 +91,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
           mode: _editing ? ZefyrMode.edit : ZefyrMode.select,
           imageDelegate: CustomImageDelegate(),
           colorDelegate: CustomColorDelegate(),
-          toolbarDelegate: CustomToolbarDelegate(),
+          // toolbarDelegate: CustomToolbarDelegate(),
           // keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
         ),
       ),

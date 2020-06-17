@@ -22,15 +22,17 @@ class HighlightButton extends StatelessWidget {
     final editor = toolbar.editor;
 
     var hasDelegate = editor.colorDelegate != null;
+    var isCollapsed = editor.selection.isCollapsed;
+    var hasAttribute = editor.selectionStyle.contains(NotusAttribute.highlight);
 
     return ZefyrButton.icon(
       action: ZefyrToolbarAction.highlight,
       icon: Icons.format_color_fill,
-      onPressed: !hasDelegate || editor.selection.isCollapsed
+      onPressed: !hasAttribute && (!hasDelegate || isCollapsed)
           ? null
           : () async {
-              Color current = Colors.yellow;
-              if (editor.selectionStyle.contains(NotusAttribute.highlight)) {
+              Color current;
+              if (hasAttribute) {
                 var value = editor.selectionStyle
                     .value<String>(NotusAttribute.highlight);
 
@@ -40,8 +42,8 @@ class HighlightButton extends StatelessWidget {
               var currentSelection = editor.selection;
 
               // editor loses focus with dialog
-              var picked =
-                  await editor.colorDelegate?.pickColor(context, current);
+              var picked = await editor.colorDelegate
+                  ?.pickColor(context, current ?? Colors.yellow);
 
               // reset selection
               editor.updateSelection(currentSelection);

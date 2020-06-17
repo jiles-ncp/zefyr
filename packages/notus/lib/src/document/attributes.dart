@@ -332,9 +332,7 @@ class _BoldAttribute extends NotusAttribute<bool> {
 }
 
 class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
-  static const _kLink = 'bg';
-  const HighlightAttributeBuilder()
-      : super._(_kLink, NotusAttributeScope.inline);
+  const HighlightAttributeBuilder() : super._('bg', NotusAttributeScope.inline);
 
   /// Creates a link attribute with specified link [value].
   NotusAttribute<String> fromString(String value) =>
