@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:notus/notus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'color.dart';
 import 'scope.dart';
 import 'theme.dart';
 import 'toolbar.dart';

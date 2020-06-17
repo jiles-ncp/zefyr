@@ -7,6 +7,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:notus/notus.dart';
 
+import '../../zefyr.dart';
 import 'buttons.dart';
 import 'scope.dart';
 import 'theme.dart';
@@ -34,12 +35,14 @@ enum ZefyrToolbarAction {
   hideKeyboard,
   close,
   confirm,
+  highlight,
 }
 
 final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.bold: NotusAttribute.bold,
   ZefyrToolbarAction.italic: NotusAttribute.italic,
   ZefyrToolbarAction.link: NotusAttribute.link,
+  ZefyrToolbarAction.highlight: NotusAttribute.highlight,
   ZefyrToolbarAction.heading: NotusAttribute.heading,
   ZefyrToolbarAction.headingLevel1: NotusAttribute.heading.level1,
   ZefyrToolbarAction.headingLevel2: NotusAttribute.heading.level2,
@@ -250,6 +253,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
 
   List<Widget> _buildButtons(BuildContext context) {
     final buttons = <Widget>[
+      HighlightButton(),
       buildButton(context, ZefyrToolbarAction.bold),
       buildButton(context, ZefyrToolbarAction.italic),
       LinkButton(),

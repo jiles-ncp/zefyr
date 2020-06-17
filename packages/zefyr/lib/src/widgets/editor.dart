@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zefyr/src/widgets/attr_delegate.dart';
+import 'package:zefyr/src/widgets/color.dart';
 
 import 'controller.dart';
 import 'editable_text.dart';
@@ -27,6 +28,7 @@ class ZefyrEditor extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
     this.toolbarDelegate,
     this.imageDelegate,
+    this.colorDelegate,
     this.selectionControls,
     this.attrDelegate,
     this.physics,
@@ -58,6 +60,7 @@ class ZefyrEditor extends StatefulWidget {
   final ZefyrToolbarDelegate toolbarDelegate;
 
   final ZefyrAttrDelegate attrDelegate;
+  final ZefyrColorDelegate colorDelegate;
 
   /// Delegate for resolving embedded images.
   ///
@@ -94,6 +97,8 @@ class ZefyrEditor extends StatefulWidget {
 class _ZefyrEditorState extends State<ZefyrEditor> {
   ZefyrImageDelegate _imageDelegate;
   ZefyrAttrDelegate _attrDelegate;
+  ZefyrColorDelegate _colorDelegate;
+
   ZefyrScope _scope;
   ZefyrThemeData _themeData;
   GlobalKey<ZefyrToolbarState> _toolbarKey;
@@ -142,6 +147,7 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
     super.initState();
     _imageDelegate = widget.imageDelegate;
     _attrDelegate = widget.attrDelegate;
+    _colorDelegate = widget.colorDelegate;
   }
 
   @override
@@ -157,6 +163,10 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
     if (widget.attrDelegate != oldWidget.attrDelegate) {
       _attrDelegate = widget.attrDelegate;
       _scope.attrDelegate = _attrDelegate;
+    }
+    if (widget.colorDelegate != oldWidget.colorDelegate) {
+      _colorDelegate = widget.colorDelegate;
+      _scope.colorDelegate = _colorDelegate;
     }
   }
 

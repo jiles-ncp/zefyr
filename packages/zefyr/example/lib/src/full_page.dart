@@ -5,10 +5,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 
+import 'color.dart';
 import 'images.dart';
 
 class ZefyrLogo extends StatelessWidget {
@@ -47,7 +49,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
   final ZefyrController _controller =
       ZefyrController(NotusDocument.fromDelta(getDelta()));
   final FocusNode _focusNode = FocusNode();
-  bool _editing = false;
+  bool _editing = true;
   StreamSubscription<NotusChange> _sub;
   bool _darkTheme = false;
 
@@ -88,6 +90,8 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
           focusNode: _focusNode,
           mode: _editing ? ZefyrMode.edit : ZefyrMode.select,
           imageDelegate: CustomImageDelegate(),
+          colorDelegate: CustomColorDelegate(),
+          toolbarDelegate: CustomToolbarDelegate(),
           // keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
         ),
       ),

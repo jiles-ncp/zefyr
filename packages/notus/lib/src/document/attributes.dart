@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:collection/collection.dart';
+import 'package:notus/notus.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 /// Scope of a style attribute, defines context in which an attribute can be
@@ -93,7 +94,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   // ignore: const_eval_throws_exception
   static const link = LinkAttributeBuilder._();
 
-  static const highlight = HighlightAttributeBuilder._();
+  static const highlight = HighlightAttributeBuilder();
 
   // Line attributes
 
@@ -330,16 +331,12 @@ class _BoldAttribute extends NotusAttribute<bool> {
   const _BoldAttribute() : super._('b', NotusAttributeScope.inline, true);
 }
 
-/// Builder for link attribute values.
-///
-/// There is no need to use this class directly, consider using
-/// [NotusAttribute.link] instead.
 class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
-  static const _kHighlight = 'bg';
-  const HighlightAttributeBuilder._()
-      : super._(_kHighlight, NotusAttributeScope.inline);
+  static const _kLink = 'bg';
+  const HighlightAttributeBuilder()
+      : super._(_kLink, NotusAttributeScope.inline);
 
-  /// Creates a Highlight attribute with specified Highlight [value].
+  /// Creates a link attribute with specified link [value].
   NotusAttribute<String> fromString(String value) =>
       NotusAttribute<String>._(key, scope, value);
 }

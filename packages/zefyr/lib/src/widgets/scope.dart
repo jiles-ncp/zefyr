@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notus/notus.dart';
+import 'package:zefyr/src/widgets/color.dart';
 import 'package:zefyr/zefyr.dart';
 
 import 'controller.dart';
@@ -44,6 +45,7 @@ class ZefyrScope extends ChangeNotifier {
     @required FocusScopeNode focusScope,
     ZefyrImageDelegate imageDelegate,
     ZefyrAttrDelegate attrDelegate,
+    ZefyrColorDelegate colorDelegate,
   })  : assert(mode != null),
         assert(controller != null),
         assert(focusNode != null),
@@ -51,6 +53,7 @@ class ZefyrScope extends ChangeNotifier {
         isEditable = true,
         _mode = mode,
         _controller = controller,
+        _colorDelegate = colorDelegate,
         _imageDelegate = imageDelegate,
         _attrDelegate = attrDelegate,
         _focusNode = focusNode,
@@ -74,6 +77,15 @@ class ZefyrScope extends ChangeNotifier {
   set imageDelegate(ZefyrImageDelegate value) {
     if (_imageDelegate != value) {
       _imageDelegate = value;
+      notifyListeners();
+    }
+  }
+
+  ZefyrColorDelegate _colorDelegate;
+  ZefyrColorDelegate get colorDelegate => _colorDelegate;
+  set colorDelegate(ZefyrColorDelegate value) {
+    if (_colorDelegate != value) {
+      _colorDelegate = value;
       notifyListeners();
     }
   }
