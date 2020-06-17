@@ -79,7 +79,8 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
     NotusAttribute.heading.key: NotusAttribute.heading,
     NotusAttribute.block.key: NotusAttribute.block,
     NotusAttribute.embed.key: NotusAttribute.embed,
-    NotusAttribute.highlight.key: NotusAttribute.highlight,
+    NotusAttribute.textBackground.key: NotusAttribute.textBackground,
+    NotusAttribute.textColor.key: NotusAttribute.textColor,
   };
 
   // Inline attributes
@@ -94,7 +95,8 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   // ignore: const_eval_throws_exception
   static const link = LinkAttributeBuilder._();
 
-  static const highlight = HighlightAttributeBuilder();
+  static const textBackground = HighlightAttributeBuilder();
+  static const textColor = TextColorAttributeBuilder();
 
   // Line attributes
 
@@ -333,6 +335,15 @@ class _BoldAttribute extends NotusAttribute<bool> {
 
 class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
   const HighlightAttributeBuilder() : super._('bg', NotusAttributeScope.inline);
+
+  /// Creates a link attribute with specified link [value].
+  NotusAttribute<String> fromString(String value) =>
+      NotusAttribute<String>._(key, scope, value);
+}
+
+class TextColorAttributeBuilder extends NotusAttributeBuilder<String> {
+  const TextColorAttributeBuilder()
+      : super._('color', NotusAttributeScope.inline);
 
   /// Creates a link attribute with specified link [value].
   NotusAttribute<String> fromString(String value) =>

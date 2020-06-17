@@ -153,6 +153,13 @@ class _ZefyrLineState extends State<ZefyrLine> {
     );
   }
 
+  Color _hexStringToColor(String hex) {
+    hex = hex.replaceFirst('#', '');
+    hex = hex.length == 6 ? 'ff' + hex : hex;
+    var val = int.parse(hex, radix: 16);
+    return Color(val);
+  }
+
   TextStyle _getTextStyle(NotusStyle style, ZefyrThemeData theme) {
     var result = TextStyle();
     if (style.containsSame(NotusAttribute.bold)) {
@@ -164,15 +171,14 @@ class _ZefyrLineState extends State<ZefyrLine> {
     if (style.contains(NotusAttribute.link)) {
       result = result.merge(theme.attributeTheme.link);
     }
-    if (style.contains(NotusAttribute.highlight)) {
-      final hexStringToColor = (String hex) {
-        hex = hex.replaceFirst('#', '');
-        hex = hex.length == 6 ? 'ff' + hex : hex;
-        int val = int.parse(hex, radix: 16);
-        return Color(val);
-      };
+    if (style.contains(NotusAttribute.textColor)) {
+      final color =
+          _hexStringToColor(style.value<String>(NotusAttribute.textColor));
+      result = result.copyWith(color: color);
+    }
+    if (style.contains(NotusAttribute.textBackground)) {
       final bgColor =
-          hexStringToColor(style.value<String>(NotusAttribute.highlight));
+          _hexStringToColor(style.value<String>(NotusAttribute.textBackground));
       result = result.copyWith(backgroundColor: bgColor);
     }
     return result;

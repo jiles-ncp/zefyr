@@ -35,14 +35,16 @@ enum ZefyrToolbarAction {
   hideKeyboard,
   close,
   confirm,
-  highlight,
+  textBackground,
+  textColor,
 }
 
 final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.bold: NotusAttribute.bold,
   ZefyrToolbarAction.italic: NotusAttribute.italic,
   ZefyrToolbarAction.link: NotusAttribute.link,
-  ZefyrToolbarAction.highlight: NotusAttribute.highlight,
+  ZefyrToolbarAction.textColor: NotusAttribute.textColor,
+  ZefyrToolbarAction.textBackground: NotusAttribute.textBackground,
   ZefyrToolbarAction.heading: NotusAttribute.heading,
   ZefyrToolbarAction.headingLevel1: NotusAttribute.heading.level1,
   ZefyrToolbarAction.headingLevel2: NotusAttribute.heading.level2,
@@ -253,7 +255,8 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
 
   List<Widget> _buildButtons(BuildContext context) {
     final buttons = <Widget>[
-      HighlightButton(),
+      TextHighlightButton(),
+      TextColorButton(),
       buildButton(context, ZefyrToolbarAction.bold),
       buildButton(context, ZefyrToolbarAction.italic),
       LinkButton(),

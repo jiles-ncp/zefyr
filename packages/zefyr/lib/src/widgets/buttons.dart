@@ -18,6 +18,20 @@ import 'toolbar.dart';
 ///
 /// Toolbar buttons are normally created by a [ZefyrToolbarDelegate].
 class ZefyrButton extends StatelessWidget {
+  /// Creates a toolbar button with any child because why restrict it?
+  ZefyrButton.child({
+    @required this.action,
+    @required Widget child,
+    this.onPressed,
+  })  : assert(action != null),
+        assert(child != null),
+        _icon = null,
+        _iconSize = null,
+        _text = null,
+        _textStyle = null,
+        _child = child,
+        super();
+
   /// Creates a toolbar button with an icon.
   ZefyrButton.icon({
     @required this.action,
@@ -30,6 +44,7 @@ class ZefyrButton extends StatelessWidget {
         _iconSize = iconSize,
         _text = null,
         _textStyle = null,
+        _child = null,
         super();
 
   /// Creates a toolbar button containing text.
@@ -47,6 +62,7 @@ class ZefyrButton extends StatelessWidget {
         _iconSize = null,
         _text = text,
         _textStyle = style,
+        _child = null,
         super();
 
   /// Toolbar action associated with this button.
@@ -55,6 +71,7 @@ class ZefyrButton extends StatelessWidget {
   final double _iconSize;
   final String _text;
   final TextStyle _textStyle;
+  final Widget _child;
 
   /// Callback to trigger when this button is tapped.
   final VoidCallback onPressed;
@@ -72,6 +89,14 @@ class ZefyrButton extends StatelessWidget {
     final iconColor = (pressedHandler == null)
         ? toolbarTheme.disabledIconColor
         : toolbarTheme.iconColor;
+    if (_child != null) {
+      return RawZefyrButton(
+        action: action,
+        child: _child,
+        color: _getColor(editor, toolbarTheme),
+        onPressed: _getPressedHandler(editor, toolbar),
+      );
+    }
     if (_icon != null) {
       return RawZefyrButton.icon(
         action: action,
