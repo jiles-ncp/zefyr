@@ -42,6 +42,7 @@ enum ZefyrToolbarAction {
   alignStart,
   alignEnd,
   alignCenter,
+  margin,
 }
 
 final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
@@ -63,6 +64,7 @@ final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.alignStart: NotusAttribute.align.start,
   ZefyrToolbarAction.alignEnd: NotusAttribute.align.end,
   ZefyrToolbarAction.alignCenter: NotusAttribute.align.center,
+  ZefyrToolbarAction.margin: NotusAttribute.margin
 };
 
 /// Allows customizing appearance of [ZefyrToolbar].
@@ -273,6 +275,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
         TextHighlightButton(),
         TextColorButton(),
       ],
+      MarginButton(),
       BoldButton(),
       // buildButton(context, ZefyrToolbarAction.bold),
       ItalicButton(),
@@ -386,7 +389,8 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.align: Icons.compare_arrows,
     ZefyrToolbarAction.alignStart: Icons.format_align_left,
     ZefyrToolbarAction.alignEnd: Icons.format_align_right,
-    ZefyrToolbarAction.alignCenter: Icons.format_align_center
+    ZefyrToolbarAction.alignCenter: Icons.format_align_center,
+    ZefyrToolbarAction.margin: Icons.settings_overscan,
   };
 
   static const kSpecialIconSizes = {

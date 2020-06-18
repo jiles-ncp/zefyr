@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notus/notus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zefyr/zefyr.dart';
 
 import 'scope.dart';
 import 'theme.dart';
@@ -380,6 +381,111 @@ class ItalicButton extends StatelessWidget {
     final toolbar = ZefyrToolbar.of(context);
 
     return toolbar.buildButton(context, ZefyrToolbarAction.italic);
+  }
+}
+
+class MarginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.margin,
+        onPressed: () {
+      toolbar.showOverlay(_buildOverlay);
+    });
+  }
+
+  Widget _buildOverlay(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+    final buttons = Row(
+      children: <Widget>[
+        Icon(Icons.swap_horiz),
+        Expanded(
+          child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 10),
+            child: _SliderWithCurrent(
+                value: 0,
+                onChanged: (value) {
+                  var val = value.floor();
+                  var current =
+                      Map<String, int>.from(NotusAttribute.margin.value);
+                  current['left'] = val;
+                  current['right'] = val;
+                  var att = NotusAttribute.margin.withValue(current);
+                  toolbar.editor.formatSelection(att);
+                }),
+          ),
+        ),
+        Icon(Icons.swap_vert),
+        Expanded(
+          child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 10),
+            child: _SliderWithCurrent(
+                value: 0,
+                onChanged: (value) {
+                  var val = value.floor();
+                  var current =
+                      Map<String, int>.from(NotusAttribute.margin.value);
+                  current['top'] = val;
+                  current['bottom'] = val;
+                  var att = NotusAttribute.margin.withValue(current);
+                  toolbar.editor.formatSelection(att);
+                }),
+          ),
+        ),
+        // SizedBox(width: 8.0),
+
+        // toolbar.buildButton(context, ZefyrToolbarAction.alignStart),
+        // toolbar.buildButton(context, ZefyrToolbarAction.alignCenter),
+        // toolbar.buildButton(context, ZefyrToolbarAction.alignEnd),
+      ],
+    );
+    return ZefyrToolbarScaffold(body: buttons);
+  }
+}
+
+class _SliderWithCurrent extends StatefulWidget {
+  final double value;
+  final ValueChanged<double> onChanged;
+
+  const _SliderWithCurrent(
+      {Key key, @required this.value, @required this.onChanged})
+      : super(key: key);
+
+  @override
+  __SliderWithCurrentState createState() => __SliderWithCurrentState();
+}
+
+class __SliderWithCurrentState extends State<_SliderWithCurrent> {
+  double _value;
+  @override
+  Widget build(BuildContext context) {
+    _value ??= widget.value;
+
+    return Stack(
+      children: [
+        Slider(
+          value: _value,
+          min: 0,
+          max: 80,
+          onChanged: (value) {
+            setState(() {
+              _value = value;
+            });
+            widget.onChanged(value);
+          },
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 5),
+            child: Text(
+              _value.floor().toString(),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

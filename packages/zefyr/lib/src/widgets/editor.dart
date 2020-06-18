@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:zefyr/src/widgets/alignment.dart';
 import 'package:zefyr/src/widgets/attr_delegate.dart';
 import 'package:zefyr/src/widgets/color.dart';
+import 'package:zefyr/zefyr.dart';
 
 import 'controller.dart';
 import 'editable_text.dart';
@@ -126,12 +127,13 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
         key: _toolbarKey,
         editor: _scope,
         delegate: widget.toolbarDelegate,
-        buildButtons: (_) {
-          return [
-            TextColorButton(),
-            AlignmentButton(),
-          ];
-        },
+        // buildButtons: (_) {
+        //   return [
+        //     TextColorButton(),
+        //     AlignmentButton(),
+        //     CodeButton(),
+        //   ];
+        // },
       ),
     );
   }

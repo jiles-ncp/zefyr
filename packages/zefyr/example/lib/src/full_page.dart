@@ -52,6 +52,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
   StreamSubscription<NotusChange> _sub;
   bool _darkTheme = false;
   PersistentBottomSheetController _sheetController;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -74,6 +75,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
         ? IconButton(onPressed: _stopEditing, icon: Icon(Icons.save))
         : IconButton(onPressed: _startEditing, icon: Icon(Icons.edit));
     final result = Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         title: ZefyrLogo(),
@@ -82,7 +84,7 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
           PopupMenuButton<_Options>(
             itemBuilder: buildPopupMenu,
             onSelected: handlePopupItemSelected,
-          )
+          ),
         ],
       ),
       body: ZefyrScaffold(
@@ -95,6 +97,9 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
           // toolbarDelegate: CustomToolbarDelegate(),
           // keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
         ),
+      ),
+      endDrawer: Drawer(
+        child: _JsonInfo(document: _controller.document),
       ),
     );
     if (_darkTheme) {
@@ -114,18 +119,8 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
     }
 
     if (value == _Options.json) {
-      _sheetController?.close();
-
-      await showDialog(
-        context: context,
-        builder: (context) {
-          var encoder = JsonEncoder.withIndent('  ');
-          final contents = encoder.convert(_controller.document);
-          return SimpleDialog(
-            children: [Text(contents)],
-          );
-        },
-      );
+      scaffoldKey.currentState.openEndDrawer();
+      return;
     }
   }
 
@@ -136,9 +131,12 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
         child: Text('Dark theme'),
         checked: _darkTheme,
       ),
-      CheckedPopupMenuItem(
+      PopupMenuItem(
         value: _Options.json,
-        child: Text('JSON'),
+        child: ListTile(
+          leading: Text('{}'),
+          title: Text('JSON'),
+        ),
       ),
     ];
   }
@@ -153,5 +151,38 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
     setState(() {
       _editing = false;
     });
+  }
+}
+
+class _JsonInfo extends StatelessWidget {
+  final NotusDocument document;
+
+  const _JsonInfo({Key key, @required this.document}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    var encoder = JsonEncoder.withIndent('  ');
+    final contents = encoder.convert(document);
+
+    return Container(
+      child: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'JSON',
+                style: theme.textTheme.headline5,
+                textAlign: TextAlign.center,
+              ),
+              Text(contents)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

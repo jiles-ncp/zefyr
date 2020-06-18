@@ -104,6 +104,22 @@ class _ZefyrLineState extends State<ZefyrLine> {
       );
     }
 
+    if (widget.node.style.contains(NotusAttribute.margin)) {
+      var att = widget.node.style.get<Map<String, int>>(NotusAttribute.margin);
+
+      var margin = EdgeInsets.fromLTRB(
+        att.value['left']?.toDouble() ?? 0,
+        att.value['top']?.toDouble() ?? 0,
+        att.value['right']?.toDouble() ?? 0,
+        att.value['bottom']?.toDouble() ?? 0,
+      );
+
+      content = Container(
+        margin: margin,
+        child: content,
+      );
+    }
+
     if (widget.padding != null) {
       return Padding(padding: widget.padding, child: content);
     }

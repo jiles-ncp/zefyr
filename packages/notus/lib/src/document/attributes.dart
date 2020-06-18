@@ -81,6 +81,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
     NotusAttribute.textBackground.key: NotusAttribute.textBackground,
     NotusAttribute.textColor.key: NotusAttribute.textColor,
     NotusAttribute.align.key: NotusAttribute.align,
+    NotusAttribute.margin.key: NotusAttribute.margin,
   };
 
   // Inline attributes
@@ -98,6 +99,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   static const textBackground = HighlightAttributeBuilder();
   static const textColor = TextColorAttributeBuilder();
   static const align = AlignmentAttributeBuilder._();
+  static const margin = _MarginAttribute();
 
   // Line attributes
 
@@ -332,6 +334,12 @@ class NotusStyle {
 /// Applies bold style to a text segment.
 class _BoldAttribute extends NotusAttribute<bool> {
   const _BoldAttribute() : super._('b', NotusAttributeScope.inline, true);
+}
+
+class _MarginAttribute extends NotusAttribute<Map<String, int>> {
+  const _MarginAttribute()
+      : super._('margin', NotusAttributeScope.line,
+            const <String, int>{'left': 0, 'top': 0, 'right': 0, 'bottom': 0});
 }
 
 class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
