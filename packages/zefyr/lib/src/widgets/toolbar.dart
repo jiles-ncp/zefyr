@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:notus/notus.dart';
 
 import '../../zefyr.dart';
+import 'alignment.dart';
 import 'buttons.dart';
 import 'scope.dart';
 import 'theme.dart';
@@ -37,6 +38,10 @@ enum ZefyrToolbarAction {
   confirm,
   textBackground,
   textColor,
+  align,
+  alignStart,
+  alignEnd,
+  alignCenter,
 }
 
 final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
@@ -54,6 +59,10 @@ final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.code: NotusAttribute.block.code,
   ZefyrToolbarAction.quote: NotusAttribute.block.quote,
   ZefyrToolbarAction.horizontalRule: NotusAttribute.embed.horizontalRule,
+  ZefyrToolbarAction.align: NotusAttribute.align,
+  ZefyrToolbarAction.alignStart: NotusAttribute.align.start,
+  ZefyrToolbarAction.alignEnd: NotusAttribute.align.end,
+  ZefyrToolbarAction.alignCenter: NotusAttribute.align.center,
 };
 
 /// Allows customizing appearance of [ZefyrToolbar].
@@ -255,6 +264,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
 
   List<Widget> _buildButtons(BuildContext context) {
     final buttons = <Widget>[
+      AlignmentButton(),
       TextHighlightButton(),
       TextColorButton(),
       buildButton(context, ZefyrToolbarAction.bold),
@@ -360,6 +370,10 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.hideKeyboard: Icons.keyboard_hide,
     ZefyrToolbarAction.close: Icons.close,
     ZefyrToolbarAction.confirm: Icons.check,
+    ZefyrToolbarAction.align: Icons.compare_arrows,
+    ZefyrToolbarAction.alignStart: Icons.format_align_left,
+    ZefyrToolbarAction.alignEnd: Icons.format_align_right,
+    ZefyrToolbarAction.alignCenter: Icons.format_align_center
   };
 
   static const kSpecialIconSizes = {

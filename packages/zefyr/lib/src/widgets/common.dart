@@ -86,9 +86,28 @@ class _ZefyrLineState extends State<ZefyrLine> {
       content = CompositedTransformTarget(link: _link, child: content);
     }
 
+    if (widget.node.style.contains(NotusAttribute.align)) {
+      var alignment = MainAxisAlignment.start;
+      var att = widget.node.style.get<int>(NotusAttribute.align);
+
+      if (att.value == 2) {
+        alignment = MainAxisAlignment.end;
+      }
+
+      if (att.value == 3) {
+        alignment = MainAxisAlignment.center;
+      }
+
+      content = Row(
+        mainAxisAlignment: alignment,
+        children: [content],
+      );
+    }
+
     if (widget.padding != null) {
       return Padding(padding: widget.padding, child: content);
     }
+
     return content;
   }
 

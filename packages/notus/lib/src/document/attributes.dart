@@ -80,6 +80,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
     NotusAttribute.embed.key: NotusAttribute.embed,
     NotusAttribute.textBackground.key: NotusAttribute.textBackground,
     NotusAttribute.textColor.key: NotusAttribute.textColor,
+    NotusAttribute.align.key: NotusAttribute.align,
   };
 
   // Inline attributes
@@ -96,6 +97,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
 
   static const textBackground = HighlightAttributeBuilder();
   static const textColor = TextColorAttributeBuilder();
+  static const align = AlignmentAttributeBuilder._();
 
   // Line attributes
 
@@ -384,6 +386,18 @@ class HeadingAttributeBuilder extends NotusAttributeBuilder<int> {
 
   /// Level 3 heading, equivalent of `H3` in HTML.
   NotusAttribute<int> get level3 => NotusAttribute<int>._(key, scope, 3);
+}
+
+class AlignmentAttributeBuilder extends NotusAttributeBuilder<int> {
+  // html equivalent: text-align: start/end/center/justify;
+  const AlignmentAttributeBuilder._()
+      : super._('align', NotusAttributeScope.line);
+
+  NotusAttribute<int> get start => NotusAttribute<int>._(key, scope, 1);
+
+  NotusAttribute<int> get end => NotusAttribute<int>._(key, scope, 2);
+
+  NotusAttribute<int> get center => NotusAttribute<int>._(key, scope, 3);
 }
 
 /// Builder for block attribute styles (number/bullet lists, code and quote).
