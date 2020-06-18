@@ -24,13 +24,6 @@ class TextColorButton extends StatelessWidget {
 
     final theme = Theme.of(context);
 
-    if (editor.colorDelegate == null) {
-      return SizedBox(
-        width: 0,
-        height: 0,
-      );
-    }
-
     return ZefyrButton.child(
       action: ZefyrToolbarAction.textColor,
       child: Icon(Icons.format_color_text),
@@ -76,13 +69,6 @@ class TextHighlightButton extends StatelessWidget {
     final toolbar = ZefyrToolbar.of(context);
     final editor = toolbar.editor;
     final attribute = NotusAttribute.textBackground;
-
-    if (editor.colorDelegate == null) {
-      return SizedBox(
-        width: 0,
-        height: 0,
-      );
-    }
 
     var hasAttribute =
         editor.selectionStyle.contains(NotusAttribute.textBackground);

@@ -6,6 +6,7 @@ class CustomToolbarDelegate extends ZefyrToolbarDelegate {
   @override
   Widget buildButton(BuildContext context, ZefyrToolbarAction action,
       {onPressed}) {
-    return Text('B');
+    // return super.buildButton(context, action);
+    return Text('custom toolbar delegate');
   }
 }

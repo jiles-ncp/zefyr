@@ -118,10 +118,12 @@ class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
     @required this.editor,
     this.autoHide = true,
     this.delegate,
+    this.buildButtons,
   }) : super(key: key);
 
   final ZefyrToolbarDelegate delegate;
   final ZefyrScope editor;
+  final List<Widget> Function(BuildContext context) buildButtons;
 
   /// Whether to automatically hide this toolbar when editor loses focus.
   final bool autoHide;
@@ -234,7 +236,9 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     // new state each time we toggle overlay.
     final toolbar = ZefyrToolbarScaffold(
       key: _toolbarKey,
-      body: ZefyrButtonList(buttons: _buildButtons(context)),
+      body: ZefyrButtonList(
+          buttons:
+              widget.buildButtons?.call(context) ?? _buildButtons(context)),
       trailing: buildButton(context, ZefyrToolbarAction.hideKeyboard),
     );
 
@@ -265,17 +269,26 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   List<Widget> _buildButtons(BuildContext context) {
     final buttons = <Widget>[
       AlignmentButton(),
-      TextHighlightButton(),
-      TextColorButton(),
-      buildButton(context, ZefyrToolbarAction.bold),
-      buildButton(context, ZefyrToolbarAction.italic),
+      if (editor.colorDelegate != null) ...[
+        TextHighlightButton(),
+        TextColorButton(),
+      ],
+      BoldButton(),
+      // buildButton(context, ZefyrToolbarAction.bold),
+      ItalicButton(),
+      // buildButton(context, ZefyrToolbarAction.italic),
       LinkButton(),
       HeadingButton(),
-      buildButton(context, ZefyrToolbarAction.bulletList),
-      buildButton(context, ZefyrToolbarAction.numberList),
-      buildButton(context, ZefyrToolbarAction.quote),
-      buildButton(context, ZefyrToolbarAction.code),
-      buildButton(context, ZefyrToolbarAction.horizontalRule),
+      BulletListButton(),
+      // buildButton(context, ZefyrToolbarAction.bulletList),
+      NumberListButton(),
+      // buildButton(context, ZefyrToolbarAction.numberList),
+      QuoteButton(),
+      // buildButton(context, ZefyrToolbarAction.quote),
+      CodeButton(),
+      // buildButton(context, ZefyrToolbarAction.code),
+      HorizontalRuleButton(),
+      // buildButton(context, ZefyrToolbarAction.horizontalRule),
       if (editor.imageDelegate != null) ImageButton(),
     ];
     return buttons;

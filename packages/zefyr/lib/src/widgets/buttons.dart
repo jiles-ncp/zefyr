@@ -320,6 +320,69 @@ class _ImageButtonState extends State<ImageButton> {
   }
 }
 
+class HorizontalRuleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.horizontalRule);
+  }
+}
+
+class CodeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.code);
+  }
+}
+
+class QuoteButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.quote);
+  }
+}
+
+class NumberListButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.numberList);
+  }
+}
+
+class BulletListButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.bulletList);
+  }
+}
+
+class BoldButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.bold);
+  }
+}
+
+class ItalicButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return toolbar.buildButton(context, ZefyrToolbarAction.italic);
+  }
+}
+
 class LinkButton extends StatefulWidget {
   const LinkButton({Key key}) : super(key: key);
 
