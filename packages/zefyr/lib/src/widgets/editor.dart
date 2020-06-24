@@ -126,14 +126,7 @@ class _ZefyrEditorState extends State<ZefyrEditor> {
       child: ZefyrToolbar(
         key: _toolbarKey,
         editor: _scope,
-        delegate: widget.toolbarDelegate,
-        // buildButtons: (_) {
-        //   return [
-        //     TextColorButton(),
-        //     AlignmentButton(),
-        //     CodeButton(),
-        //   ];
-        // },
+        delegate: widget.toolbarDelegate ?? DefaultZefyrToolbarDelegate(),
       ),
     );
   }

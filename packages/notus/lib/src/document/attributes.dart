@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:collection/collection.dart';
+import 'package:notus/notus.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 /// Scope of a style attribute, defines context in which an attribute can be
@@ -74,6 +75,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   static final Map<String, NotusAttributeBuilder> _registry = {
     NotusAttribute.bold.key: NotusAttribute.bold,
     NotusAttribute.italic.key: NotusAttribute.italic,
+    NotusAttribute.underline.key: NotusAttribute.underline,
     NotusAttribute.link.key: NotusAttribute.link,
     NotusAttribute.heading.key: NotusAttribute.heading,
     NotusAttribute.block.key: NotusAttribute.block,
@@ -82,6 +84,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
     NotusAttribute.textColor.key: NotusAttribute.textColor,
     NotusAttribute.align.key: NotusAttribute.align,
     NotusAttribute.margin.key: NotusAttribute.margin,
+    NotusAttribute.padding.key: NotusAttribute.padding,
   };
 
   // Inline attributes
@@ -91,6 +94,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
 
   /// Italic style attribute.
   static const italic = _ItalicAttribute();
+  static const underline = _UnderlineAttribute();
 
   /// Link style attribute.
   // ignore: const_eval_throws_exception
@@ -100,6 +104,7 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   static const textColor = TextColorAttributeBuilder();
   static const align = AlignmentAttributeBuilder._();
   static const margin = _MarginAttribute();
+  static const padding = _PaddingAttribute();
 
   // Line attributes
 
@@ -336,10 +341,24 @@ class _BoldAttribute extends NotusAttribute<bool> {
   const _BoldAttribute() : super._('b', NotusAttributeScope.inline, true);
 }
 
-class _MarginAttribute extends NotusAttribute<Map<String, int>> {
+class _MarginAttribute extends NotusAttribute<Map<String, dynamic>> {
   const _MarginAttribute()
-      : super._('margin', NotusAttributeScope.line,
-            const <String, int>{'left': 0, 'top': 0, 'right': 0, 'bottom': 0});
+      : super._('margin', NotusAttributeScope.line, const <String, dynamic>{
+          'left': 0,
+          'top': 0,
+          'right': 0,
+          'bottom': 0
+        });
+}
+
+class _PaddingAttribute extends NotusAttribute<Map<String, dynamic>> {
+  const _PaddingAttribute()
+      : super._('padding', NotusAttributeScope.line, const <String, dynamic>{
+          'left': 0,
+          'top': 0,
+          'right': 0,
+          'bottom': 0
+        });
 }
 
 class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
@@ -362,6 +381,11 @@ class TextColorAttributeBuilder extends NotusAttributeBuilder<String> {
 /// Applies italic style to a text segment.
 class _ItalicAttribute extends NotusAttribute<bool> {
   const _ItalicAttribute() : super._('i', NotusAttributeScope.inline, true);
+}
+
+/// Applies underline style to a text segment.
+class _UnderlineAttribute extends NotusAttribute<bool> {
+  const _UnderlineAttribute() : super._('u', NotusAttributeScope.inline, true);
 }
 
 /// Builder for link attribute values.

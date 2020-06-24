@@ -24,9 +24,9 @@ class TextColorButton extends StatelessWidget {
 
     final theme = Theme.of(context);
 
-    return ZefyrButton.child(
+    return ZefyrButton.icon(
       action: ZefyrToolbarAction.textColor,
-      child: Icon(Icons.format_color_text),
+      icon: Icons.format_color_text,
       onPressed: () async {
         Color current;
         if (editor.selectionStyle.contains(attribute)) {
@@ -38,8 +38,8 @@ class TextColorButton extends StatelessWidget {
         var currentSelection = editor.selection;
 
         // editor loses focus with dialog
-        var picked = await editor.colorDelegate?.pickColor(
-            context, current ?? theme.textTheme.bodyText1.color.withOpacity(1));
+        var picked = await editor.colorDelegate
+            ?.pickColor(context, current ?? Color(0x363636).withOpacity(1));
 
         // reset selection
         editor.updateSelection(currentSelection);

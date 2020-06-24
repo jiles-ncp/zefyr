@@ -34,29 +34,44 @@ class __ColorDialogState extends State<_ColorDialog> {
   Color _color;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     _color ??= widget.color;
     return AlertDialog(
       titlePadding: const EdgeInsets.all(0.0),
       contentPadding: const EdgeInsets.all(0.0),
       content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: _color,
-          onColorChanged: (it) {
-            if (!mounted) return;
-            setState(() {
-              _color = it;
-            });
-          },
-          colorPickerWidth: 300.0,
-          pickerAreaHeightPercent: 0.7,
-          enableAlpha: false,
-          displayThumbColor: true,
-          // showLabel: true,
-          paletteType: PaletteType.hsv,
-          pickerAreaBorderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(2.0),
-            topRight: Radius.circular(2.0),
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 15),
+              child: Text(
+                'Choose Color',
+                style: theme.textTheme.headline5,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ColorPicker(
+                pickerColor: _color,
+                onColorChanged: (it) {
+                  if (!mounted) return;
+                  setState(() {
+                    _color = it;
+                  });
+                },
+                colorPickerWidth: 300.0,
+                // pickerAreaHeightPercent: 0.7,
+                enableAlpha: false,
+                displayThumbColor: true,
+                showLabel: false,
+                // paletteType: PaletteType.hsv,
+                pickerAreaBorderRadius:
+                    const BorderRadius.all(Radius.circular(20)),
+              ),
+            ),
+          ],
         ),
       ),
       actions: [

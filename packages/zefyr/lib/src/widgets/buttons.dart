@@ -384,31 +384,47 @@ class ItalicButton extends StatelessWidget {
   }
 }
 
-class MarginButton extends StatelessWidget {
+class UnderlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final toolbar = ZefyrToolbar.of(context);
 
-    return toolbar.buildButton(context, ZefyrToolbarAction.margin,
+    return toolbar.buildButton(context, ZefyrToolbarAction.underline);
+  }
+}
+
+class MarginButton extends StatelessWidget {
+  final Widget child;
+
+  const MarginButton({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return ZefyrButton.child(
+        action: ZefyrToolbarAction.margin,
+        child: child ?? Text('Margin'),
         onPressed: () {
-      toolbar.showOverlay(_buildOverlay);
-    });
+          toolbar.showOverlay(_buildOverlay);
+        });
   }
 
   Widget _buildOverlay(BuildContext context) {
     final toolbar = ZefyrToolbar.of(context);
     final buttons = Row(
       children: <Widget>[
-        Icon(Icons.swap_horiz),
+        // Icon(Icons.swap_horiz),
         Expanded(
           child: Container(
             // margin: EdgeInsets.symmetric(horizontal: 10),
-            child: _SliderWithCurrent(
+            child: _Slider(
                 value: 0,
+                axis: Axis.horizontal,
                 onChanged: (value) {
                   var val = value.floor();
                   var current =
-                      Map<String, int>.from(NotusAttribute.margin.value);
+                      Map<String, dynamic>.from(NotusAttribute.margin.value);
                   current['left'] = val;
                   current['right'] = val;
                   var att = NotusAttribute.margin.withValue(current);
@@ -416,16 +432,17 @@ class MarginButton extends StatelessWidget {
                 }),
           ),
         ),
-        Icon(Icons.swap_vert),
+        // Icon(Icons.swap_vert),
         Expanded(
           child: Container(
             // margin: EdgeInsets.symmetric(horizontal: 10),
-            child: _SliderWithCurrent(
+            child: _Slider(
                 value: 0,
+                axis: Axis.vertical,
                 onChanged: (value) {
                   var val = value.floor();
                   var current =
-                      Map<String, int>.from(NotusAttribute.margin.value);
+                      Map<String, dynamic>.from(NotusAttribute.margin.value);
                   current['top'] = val;
                   current['bottom'] = val;
                   var att = NotusAttribute.margin.withValue(current);
@@ -433,30 +450,96 @@ class MarginButton extends StatelessWidget {
                 }),
           ),
         ),
-        // SizedBox(width: 8.0),
-
-        // toolbar.buildButton(context, ZefyrToolbarAction.alignStart),
-        // toolbar.buildButton(context, ZefyrToolbarAction.alignCenter),
-        // toolbar.buildButton(context, ZefyrToolbarAction.alignEnd),
       ],
     );
     return ZefyrToolbarScaffold(body: buttons);
   }
 }
 
-class _SliderWithCurrent extends StatefulWidget {
+class PaddingButton extends StatelessWidget {
+  final Widget child;
+
+  const PaddingButton({Key key, this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+
+    return child ??
+        toolbar.buildButton(context, ZefyrToolbarAction.padding, onPressed: () {
+          toolbar.showOverlay(_buildOverlay);
+        });
+    // return ZefyrButton.child(
+    //     action: ZefyrToolbarAction.padding,
+    //     child: child ?? Text('padding'),
+    //     onPressed: () {
+    //       toolbar.showOverlay(_buildOverlay);
+    //     });
+  }
+
+  Widget _buildOverlay(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+    final buttons = Row(
+      children: <Widget>[
+        // Icon(Icons.swap_horiz),
+        Expanded(
+          child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 10),
+            child: _Slider(
+                value: 0,
+                axis: Axis.horizontal,
+                onChanged: (value) {
+                  var val = value.floor();
+                  var current =
+                      Map<String, dynamic>.from(NotusAttribute.padding.value);
+                  current['left'] = val;
+                  current['right'] = val;
+                  var att = NotusAttribute.padding.withValue(current);
+                  toolbar.editor.formatSelection(att);
+                }),
+          ),
+        ),
+        // Icon(Icons.swap_vert),
+        Expanded(
+          child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 10),
+            child: _Slider(
+                value: 0,
+                axis: Axis.vertical,
+                onChanged: (value) {
+                  var val = value.floor();
+                  var current =
+                      Map<String, dynamic>.from(NotusAttribute.padding.value);
+                  current['top'] = val;
+                  current['bottom'] = val;
+                  print('val: $val');
+                  var att = NotusAttribute.padding.withValue(current);
+                  toolbar.editor.formatSelection(att);
+                }),
+          ),
+        ),
+      ],
+    );
+    return ZefyrToolbarScaffold(body: buttons);
+  }
+}
+
+class _Slider extends StatefulWidget {
   final double value;
+  final Axis axis;
   final ValueChanged<double> onChanged;
 
-  const _SliderWithCurrent(
-      {Key key, @required this.value, @required this.onChanged})
+  const _Slider(
+      {Key key,
+      @required this.value,
+      @required this.onChanged,
+      @required this.axis})
       : super(key: key);
 
   @override
-  __SliderWithCurrentState createState() => __SliderWithCurrentState();
+  _SliderState createState() => _SliderState();
 }
 
-class __SliderWithCurrentState extends State<_SliderWithCurrent> {
+class _SliderState extends State<_Slider> {
   double _value;
   @override
   Widget build(BuildContext context) {
@@ -468,6 +551,8 @@ class __SliderWithCurrentState extends State<_SliderWithCurrent> {
           value: _value,
           min: 0,
           max: 80,
+          divisions: 80,
+          label: _value.toString(),
           onChanged: (value) {
             setState(() {
               _value = value;
@@ -479,8 +564,11 @@ class __SliderWithCurrentState extends State<_SliderWithCurrent> {
           alignment: Alignment.bottomCenter,
           child: Container(
             margin: EdgeInsets.only(bottom: 5),
-            child: Text(
-              _value.floor().toString(),
+            child: Icon(
+              widget.axis == Axis.horizontal
+                  ? Icons.swap_horiz
+                  : Icons.swap_vert,
+              size: 16,
             ),
           ),
         ),

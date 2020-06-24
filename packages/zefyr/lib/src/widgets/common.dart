@@ -104,18 +104,44 @@ class _ZefyrLineState extends State<ZefyrLine> {
       );
     }
 
-    if (widget.node.style.contains(NotusAttribute.margin)) {
-      var att = widget.node.style.get<Map<String, int>>(NotusAttribute.margin);
+    var hasPadding = widget.node.style.contains(NotusAttribute.padding);
+    // print('padding: $hasPadding');
 
-      var margin = EdgeInsets.fromLTRB(
-        att.value['left']?.toDouble() ?? 0,
-        att.value['top']?.toDouble() ?? 0,
-        att.value['right']?.toDouble() ?? 0,
-        att.value['bottom']?.toDouble() ?? 0,
-      );
+    if (widget.node.style.contains(NotusAttribute.margin) ||
+        widget.node.style.contains(NotusAttribute.padding)) {
+      EdgeInsets margin;
+      EdgeInsets padding;
+
+      if (widget.node.style.contains(NotusAttribute.margin)) {
+        var att =
+            widget.node.style.get<Map<String, dynamic>>(NotusAttribute.margin);
+
+        margin = EdgeInsets.fromLTRB(
+          (att.value['left'] ?? 0).toDouble(),
+          (att.value['top'] ?? 0).toDouble(),
+          (att.value['right'] ?? 0).toDouble(),
+          (att.value['bottom'] ?? 0).toDouble(),
+        );
+      }
+
+      if (widget.node.style.contains(NotusAttribute.padding)) {
+        var att =
+            widget.node.style.get<Map<String, dynamic>>(NotusAttribute.padding);
+
+        padding = EdgeInsets.fromLTRB(
+          (att.value['left'] ?? 0).toDouble(),
+          (att.value['top'] ?? 0).toDouble(),
+          (att.value['right'] ?? 0).toDouble(),
+          (att.value['bottom'] ?? 0).toDouble(),
+        );
+      }
+
+      print('padding: $padding');
+      print('margin: $margin');
 
       content = Container(
         margin: margin,
+        padding: padding,
         child: content,
       );
     }
@@ -197,11 +223,17 @@ class _ZefyrLineState extends State<ZefyrLine> {
 
   TextStyle _getTextStyle(NotusStyle style, ZefyrThemeData theme) {
     var result = TextStyle();
+
     if (style.containsSame(NotusAttribute.bold)) {
       result = result.merge(theme.attributeTheme.bold);
     }
     if (style.containsSame(NotusAttribute.italic)) {
       result = result.merge(theme.attributeTheme.italic);
+    }
+    if (style.containsSame(NotusAttribute.underline)) {
+      result = result.copyWith(
+        decoration: TextDecoration.underline,
+      );
     }
     if (style.contains(NotusAttribute.link)) {
       result = result.merge(theme.attributeTheme.link);

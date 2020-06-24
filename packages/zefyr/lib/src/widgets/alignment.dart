@@ -7,13 +7,17 @@ class AlignmentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final toolbar = ZefyrToolbar.of(context);
 
-    return ZefyrButton.icon(
-      action: ZefyrToolbarAction.align,
-      icon: Icons.format_align_justify,
-      onPressed: () {
-        showOverlay(context);
-      },
-    );
+    return toolbar.buildButton(context, ZefyrToolbarAction.align,
+        onPressed: () {
+      showOverlay(context);
+    });
+    // return ZefyrButton.icon(
+    //   action: ZefyrToolbarAction.align,
+    //   // icon: Icons.f,
+    //   onPressed: () {
+    //     showOverlay(context);
+    //   },
+    // );
   }
 
   void showOverlay(BuildContext context) {
@@ -32,5 +36,29 @@ class AlignmentButton extends StatelessWidget {
       ],
     );
     return ZefyrToolbarScaffold(body: buttons);
+  }
+}
+
+class LeftAlignmentButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+    return toolbar.buildButton(context, ZefyrToolbarAction.alignStart);
+  }
+}
+
+class CenterAlignmentButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+    return toolbar.buildButton(context, ZefyrToolbarAction.alignCenter);
+  }
+}
+
+class RightAlignmentButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final toolbar = ZefyrToolbar.of(context);
+    return toolbar.buildButton(context, ZefyrToolbarAction.alignEnd);
   }
 }

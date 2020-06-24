@@ -43,11 +43,14 @@ enum ZefyrToolbarAction {
   alignEnd,
   alignCenter,
   margin,
+  padding,
+  underline
 }
 
 final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.bold: NotusAttribute.bold,
   ZefyrToolbarAction.italic: NotusAttribute.italic,
+  ZefyrToolbarAction.underline: NotusAttribute.underline,
   ZefyrToolbarAction.link: NotusAttribute.link,
   ZefyrToolbarAction.textColor: NotusAttribute.textColor,
   ZefyrToolbarAction.textBackground: NotusAttribute.textBackground,
@@ -64,7 +67,8 @@ final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
   ZefyrToolbarAction.alignStart: NotusAttribute.align.start,
   ZefyrToolbarAction.alignEnd: NotusAttribute.align.end,
   ZefyrToolbarAction.alignCenter: NotusAttribute.align.center,
-  ZefyrToolbarAction.margin: NotusAttribute.margin
+  ZefyrToolbarAction.margin: NotusAttribute.margin,
+  ZefyrToolbarAction.padding: NotusAttribute.padding,
 };
 
 /// Allows customizing appearance of [ZefyrToolbar].
@@ -74,6 +78,36 @@ abstract class ZefyrToolbarDelegate {
   /// Returned widget is usually an instance of [ZefyrButton].
   Widget buildButton(BuildContext context, ZefyrToolbarAction action,
       {VoidCallback onPressed});
+
+  List<Widget> buildButtons(BuildContext context, ZefyrScope editor) {
+    // final editor = ZefyrToolbar.of(context).editor;
+
+    return <Widget>[
+      BoldButton(),
+      ItalicButton(),
+      UnderlineButton(),
+
+      LeftAlignmentButton(),
+      CenterAlignmentButton(),
+      RightAlignmentButton(),
+
+      if (editor.colorDelegate != null) ...[
+        TextHighlightButton(),
+        TextColorButton(),
+      ],
+      if (editor.imageDelegate != null) ImageButton(),
+      MarginButton(),
+      // PaddingButton(), not working
+
+      LinkButton(),
+      HeadingButton(),
+      BulletListButton(),
+      NumberListButton(),
+      QuoteButton(),
+      CodeButton(),
+      HorizontalRuleButton(),
+    ];
+  }
 }
 
 /// Scaffold for [ZefyrToolbar].
@@ -120,12 +154,10 @@ class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
     @required this.editor,
     this.autoHide = true,
     this.delegate,
-    this.buildButtons,
   }) : super(key: key);
 
   final ZefyrToolbarDelegate delegate;
   final ZefyrScope editor;
-  final List<Widget> Function(BuildContext context) buildButtons;
 
   /// Whether to automatically hide this toolbar when editor loses focus.
   final bool autoHide;
@@ -210,7 +242,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   @override
   void initState() {
     super.initState();
-    _delegate = widget.delegate ?? _DefaultZefyrToolbarDelegate();
+    _delegate = widget.delegate ?? DefaultZefyrToolbarDelegate();
     _overlayAnimation =
         AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     _selection = editor.selection;
@@ -220,7 +252,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   void didUpdateWidget(ZefyrToolbar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.delegate != oldWidget.delegate) {
-      _delegate = widget.delegate ?? _DefaultZefyrToolbarDelegate();
+      _delegate = widget.delegate ?? DefaultZefyrToolbarDelegate();
     }
   }
 
@@ -239,8 +271,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     final toolbar = ZefyrToolbarScaffold(
       key: _toolbarKey,
       body: ZefyrButtonList(
-          buttons:
-              widget.buildButtons?.call(context) ?? _buildButtons(context)),
+          buttons: widget.delegate.buildButtons(context, widget.editor)),
       trailing: buildButton(context, ZefyrToolbarAction.hideKeyboard),
     );
 
@@ -266,35 +297,6 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
         child: Stack(children: layers),
       ),
     );
-  }
-
-  List<Widget> _buildButtons(BuildContext context) {
-    final buttons = <Widget>[
-      AlignmentButton(),
-      if (editor.colorDelegate != null) ...[
-        TextHighlightButton(),
-        TextColorButton(),
-      ],
-      MarginButton(),
-      BoldButton(),
-      // buildButton(context, ZefyrToolbarAction.bold),
-      ItalicButton(),
-      // buildButton(context, ZefyrToolbarAction.italic),
-      LinkButton(),
-      HeadingButton(),
-      BulletListButton(),
-      // buildButton(context, ZefyrToolbarAction.bulletList),
-      NumberListButton(),
-      // buildButton(context, ZefyrToolbarAction.numberList),
-      QuoteButton(),
-      // buildButton(context, ZefyrToolbarAction.quote),
-      CodeButton(),
-      // buildButton(context, ZefyrToolbarAction.code),
-      HorizontalRuleButton(),
-      // buildButton(context, ZefyrToolbarAction.horizontalRule),
-      if (editor.imageDelegate != null) ImageButton(),
-    ];
-    return buttons;
   }
 }
 
@@ -366,10 +368,11 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
   }
 }
 
-class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
+class DefaultZefyrToolbarDelegate extends ZefyrToolbarDelegate {
   static const kDefaultButtonIcons = {
     ZefyrToolbarAction.bold: Icons.format_bold,
     ZefyrToolbarAction.italic: Icons.format_italic,
+    ZefyrToolbarAction.underline: Icons.format_underlined,
     ZefyrToolbarAction.link: Icons.link,
     ZefyrToolbarAction.unlink: Icons.link_off,
     ZefyrToolbarAction.clipboardCopy: Icons.content_copy,
@@ -386,7 +389,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.hideKeyboard: Icons.keyboard_hide,
     ZefyrToolbarAction.close: Icons.close,
     ZefyrToolbarAction.confirm: Icons.check,
-    ZefyrToolbarAction.align: Icons.compare_arrows,
+    ZefyrToolbarAction.align: Icons.format_align_left,
     ZefyrToolbarAction.alignStart: Icons.format_align_left,
     ZefyrToolbarAction.alignEnd: Icons.format_align_right,
     ZefyrToolbarAction.alignCenter: Icons.format_align_center,
@@ -414,6 +417,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     if (kDefaultButtonIcons.containsKey(action)) {
       final icon = kDefaultButtonIcons[action];
       final size = kSpecialIconSizes[action];
+
       return ZefyrButton.icon(
         action: action,
         icon: icon,
