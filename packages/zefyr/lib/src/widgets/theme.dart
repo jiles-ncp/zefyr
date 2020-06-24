@@ -503,7 +503,7 @@ class ToolbarTheme {
   /// Creates default theme for editor toolbar.
   factory ToolbarTheme.fallback(BuildContext context) {
     final theme = Theme.of(context);
-    return ToolbarTheme._(
+    return ToolbarTheme(
       color: theme.primaryColorBrightness == Brightness.light
           ? Colors.grey.shade300
           : Colors.grey.shade800,
@@ -515,7 +515,7 @@ class ToolbarTheme {
     );
   }
 
-  ToolbarTheme._({
+  ToolbarTheme({
     @required this.color,
     @required this.toggleColor,
     @required this.iconColor,
@@ -530,7 +530,7 @@ class ToolbarTheme {
     Color iconColor,
     Color disabledIconColor,
   }) {
-    return ToolbarTheme._(
+    return ToolbarTheme(
       color: color ?? this.color,
       toggleColor: toggleColor ?? this.toggleColor,
       iconColor: iconColor ?? this.iconColor,
