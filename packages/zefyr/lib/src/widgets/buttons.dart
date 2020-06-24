@@ -404,7 +404,7 @@ class MarginButton extends StatelessWidget {
 
     return ZefyrButton.child(
         action: ZefyrToolbarAction.margin,
-        child: child ?? Text('Margin'),
+        child: child ?? Icon(Icons.settings_overscan),
         onPressed: () {
           toolbar.showOverlay(_buildOverlay);
         });
