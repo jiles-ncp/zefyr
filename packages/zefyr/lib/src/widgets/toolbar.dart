@@ -72,6 +72,7 @@ final kZefyrToolbarAttributeActions = <ZefyrToolbarAction, NotusAttributeKey>{
 };
 
 /// Allows customizing appearance of [ZefyrToolbar].
+/// see [DefaultZefyrToolbarDelegate]
 abstract class ZefyrToolbarDelegate {
   /// Builds toolbar button for specified [action].
   ///
@@ -79,35 +80,7 @@ abstract class ZefyrToolbarDelegate {
   Widget buildButton(BuildContext context, ZefyrToolbarAction action,
       {VoidCallback onPressed});
 
-  List<Widget> buildButtons(BuildContext context, ZefyrScope editor) {
-    // final editor = ZefyrToolbar.of(context).editor;
-
-    return <Widget>[
-      BoldButton(),
-      ItalicButton(),
-      UnderlineButton(),
-
-      LeftAlignmentButton(),
-      CenterAlignmentButton(),
-      RightAlignmentButton(),
-
-      if (editor.colorDelegate != null) ...[
-        TextHighlightButton(),
-        TextColorButton(),
-      ],
-      if (editor.imageDelegate != null) ImageButton(),
-      MarginButton(),
-      // PaddingButton(), not working
-
-      LinkButton(),
-      HeadingButton(),
-      BulletListButton(),
-      NumberListButton(),
-      QuoteButton(),
-      CodeButton(),
-      HorizontalRuleButton(),
-    ];
-  }
+  List<Widget> buildButtons(BuildContext context, ZefyrScope editor);
 }
 
 /// Scaffold for [ZefyrToolbar].
@@ -436,5 +409,34 @@ class DefaultZefyrToolbarDelegate extends ZefyrToolbarDelegate {
         onPressed: onPressed,
       );
     }
+  }
+
+  @override
+  List<Widget> buildButtons(BuildContext context, ZefyrScope editor) {
+    return <Widget>[
+      BoldButton(),
+      ItalicButton(),
+      UnderlineButton(),
+
+      LeftAlignmentButton(),
+      CenterAlignmentButton(),
+      RightAlignmentButton(),
+
+      if (editor.colorDelegate != null) ...[
+        TextHighlightButton(),
+        TextColorButton(),
+      ],
+      if (editor.imageDelegate != null) ImageButton(),
+      MarginButton(),
+      // PaddingButton(), not working
+
+      LinkButton(),
+      HeadingButton(),
+      BulletListButton(),
+      NumberListButton(),
+      QuoteButton(),
+      CodeButton(),
+      HorizontalRuleButton(),
+    ];
   }
 }
