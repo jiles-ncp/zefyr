@@ -865,3 +865,15 @@ class _LinkView extends StatelessWidget {
     return widget;
   }
 }
+
+class ZefyrSpacer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = ZefyrTheme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      color: theme.toolbarTheme.disabledIconColor,
+      width: 1,
+    );
+  }
+}

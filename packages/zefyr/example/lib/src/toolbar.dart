@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
-class ZefyrSpacer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final theme = ZefyrTheme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      color: theme.toolbarTheme.disabledIconColor,
-      width: 1,
-    );
-  }
-}
-
 class CustomToolbarDelegate extends DefaultZefyrToolbarDelegate {
   // @override
   // Widget buildButton(BuildContext context, ZefyrToolbarAction action,
