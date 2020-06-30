@@ -319,19 +319,21 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
         SizedBox(
           width: 12.0,
           height: ZefyrToolbar.kToolbarHeight,
-          child: Container(child: leftArrow, color: theme.color),
+          child: Container(child: leftArrow),
         ),
         Expanded(child: ClipRect(child: list)),
         SizedBox(
           width: 12.0,
           height: ZefyrToolbar.kToolbarHeight,
-          child: Container(child: rightArrow, color: theme.color),
+          child: Container(child: rightArrow),
         ),
       ],
     );
   }
 
   void _handleScroll() {
+    if (!mounted) return;
+
     setState(() {
       _showLeftArrow =
           _controller.position.minScrollExtent != _controller.position.pixels;
@@ -362,7 +364,7 @@ class DefaultZefyrToolbarDelegate extends ZefyrToolbarDelegate {
     ZefyrToolbarAction.hideKeyboard: Icons.keyboard_hide,
     ZefyrToolbarAction.close: Icons.close,
     ZefyrToolbarAction.confirm: Icons.check,
-    ZefyrToolbarAction.align: Icons.format_align_left,
+    ZefyrToolbarAction.align: Icons.format_align_center,
     ZefyrToolbarAction.alignStart: Icons.format_align_left,
     ZefyrToolbarAction.alignEnd: Icons.format_align_right,
     ZefyrToolbarAction.alignCenter: Icons.format_align_center,

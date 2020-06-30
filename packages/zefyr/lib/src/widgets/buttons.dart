@@ -394,20 +394,16 @@ class UnderlineButton extends StatelessWidget {
 }
 
 class MarginButton extends StatelessWidget {
-  final Widget child;
-
-  const MarginButton({Key key, this.child}) : super(key: key);
+  const MarginButton({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final toolbar = ZefyrToolbar.of(context);
-
-    return ZefyrButton.child(
-        action: ZefyrToolbarAction.margin,
-        child: child ?? Icon(Icons.settings_overscan),
-        onPressed: () {
-          toolbar.showOverlay(_buildOverlay);
-        });
+    return toolbar.buildButton(
+      context,
+      ZefyrToolbarAction.margin,
+      onPressed: () => toolbar.showOverlay(_buildOverlay),
+    );
   }
 
   Widget _buildOverlay(BuildContext context) {
@@ -457,23 +453,14 @@ class MarginButton extends StatelessWidget {
 }
 
 class PaddingButton extends StatelessWidget {
-  final Widget child;
-
-  const PaddingButton({Key key, this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final toolbar = ZefyrToolbar.of(context);
 
-    return child ??
-        toolbar.buildButton(context, ZefyrToolbarAction.padding, onPressed: () {
-          toolbar.showOverlay(_buildOverlay);
-        });
-    // return ZefyrButton.child(
-    //     action: ZefyrToolbarAction.padding,
-    //     child: child ?? Text('padding'),
-    //     onPressed: () {
-    //       toolbar.showOverlay(_buildOverlay);
-    //     });
+    return toolbar.buildButton(context, ZefyrToolbarAction.padding,
+        onPressed: () {
+      toolbar.showOverlay(_buildOverlay);
+    });
   }
 
   Widget _buildOverlay(BuildContext context) {
@@ -501,7 +488,6 @@ class PaddingButton extends StatelessWidget {
         // Icon(Icons.swap_vert),
         Expanded(
           child: Container(
-            // margin: EdgeInsets.symmetric(horizontal: 10),
             child: _Slider(
                 value: 0,
                 axis: Axis.vertical,
@@ -541,14 +527,21 @@ class _Slider extends StatefulWidget {
 
 class _SliderState extends State<_Slider> {
   double _value;
+
   @override
   Widget build(BuildContext context) {
+    final theme = ZefyrTheme.of(context);
     _value ??= widget.value;
 
-    return Stack(
+    return Container(
+        // color: Colors.yellow,
+        child: Stack(
       children: [
+        SizedBox(width: 40),
         Slider(
           value: _value,
+          activeColor: theme.toolbarTheme.iconColor,
+          inactiveColor: theme.toolbarTheme.disabledIconColor,
           min: 0,
           max: 80,
           divisions: 80,
@@ -561,19 +554,18 @@ class _SliderState extends State<_Slider> {
           },
         ),
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.centerLeft,
           child: Container(
-            margin: EdgeInsets.only(bottom: 5),
             child: Icon(
               widget.axis == Axis.horizontal
                   ? Icons.swap_horiz
                   : Icons.swap_vert,
-              size: 16,
+              color: theme.toolbarTheme.iconColor,
             ),
           ),
         ),
       ],
-    );
+    ));
   }
 }
 
@@ -871,8 +863,8 @@ class ZefyrSpacer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      color: theme.toolbarTheme.disabledIconColor,
+      margin: EdgeInsets.symmetric(vertical: 9),
+      color: theme.toolbarTheme.iconColor.withOpacity(.7),
       width: 1,
     );
   }

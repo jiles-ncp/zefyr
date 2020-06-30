@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:notus/notus.dart';
 
+import '../../zefyr.dart';
 import 'editable_box.dart';
 import 'selection_utils.dart';
 import 'theme.dart';
@@ -60,7 +61,9 @@ class _ZefyrImageState extends State<ZefyrImage> {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
+
     final image = widget.delegate.buildImage(context, imageSource);
+
     return _EditableImage(
       child: Padding(
         padding: theme.defaultLineTheme.padding,
@@ -215,11 +218,12 @@ class RenderEditableImage extends RenderBox
       // Make constraints use 16:9 aspect ratio.
       final width = constraints.maxWidth - kHorizontalPadding * 2;
       final childConstraints = constraints.copyWith(
-        minWidth: 0.0,
-        maxWidth: width,
-        minHeight: 0.0,
-        maxHeight: (width * 9 / 16).floorToDouble(),
-      );
+          minWidth: 0.0,
+          maxWidth: width,
+          minHeight: 0.0,
+          maxHeight:
+              constraints.biggest.height //(width * 9 / 16).floorToDouble(),
+          );
       child.layout(childConstraints, parentUsesSize: true);
       _lastChildSize = child.size;
       size = Size(constraints.maxWidth, _lastChildSize.height);

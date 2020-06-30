@@ -89,14 +89,20 @@ class _FullPageEditorScreenState extends State<FullPageEditorScreen> {
         ],
       ),
       body: ZefyrScaffold(
-        child: ZefyrEditor(
-          controller: _controller,
-          focusNode: _focusNode,
-          mode: _editing ? ZefyrMode.edit : ZefyrMode.select,
-          imageDelegate: CustomImageDelegate(),
-          colorDelegate: CustomColorDelegate(),
-          toolbarDelegate: CustomToolbarDelegate(),
-          // keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
+        child: ZefyrTheme(
+          data: ZefyrThemeData(
+              toolbarTheme: ToolbarTheme.fallback(context).copyWith(
+                  color: Colors.blue,
+                  toggleColor: Colors.white.withOpacity(.3))),
+          child: ZefyrEditor(
+            controller: _controller,
+            focusNode: _focusNode,
+            mode: _editing ? ZefyrMode.edit : ZefyrMode.select,
+            imageDelegate: CustomImageDelegate(),
+            colorDelegate: CustomColorDelegate(),
+            toolbarDelegate: CustomToolbarDelegate(),
+            // keyboardAppearance: _darkTheme ? Brightness.dark : Brightness.light,
+          ),
         ),
       ),
       endDrawer: Drawer(

@@ -136,9 +136,6 @@ class _ZefyrLineState extends State<ZefyrLine> {
         );
       }
 
-      print('padding: $padding');
-      print('margin: $margin');
-
       content = Container(
         margin: margin,
         padding: padding,

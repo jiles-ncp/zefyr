@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
+// class CustomButton extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ZefyrButton.child(
+//       action: ZefyrToolbarAction.,
+//       onPressed: () {},
+//       child: RaisedButton(
+//         child: Text('btn'),
+//         onPressed: () {},
+//       ),
+//     );
+//   }
+// }
+
 class CustomToolbarDelegate extends DefaultZefyrToolbarDelegate {
   // @override
   // Widget buildButton(BuildContext context, ZefyrToolbarAction action,
@@ -10,24 +24,27 @@ class CustomToolbarDelegate extends DefaultZefyrToolbarDelegate {
   List<Widget> buildButtons(BuildContext context, ZefyrScope editor) {
     return <Widget>[
       BoldButton(),
-      // ItalicButton(),
-      // UnderlineButton(),
+      ItalicButton(),
+      UnderlineButton(),
+      HeadingButton(),
+      LinkButton(),
+
+      ZefyrSpacer(),
+
+      TextHighlightButton(),
+      TextColorButton(),
+      if (editor.imageDelegate != null) ImageButton(),
 
       ZefyrSpacer(),
 
       AlignmentButton(),
+      MarginButton(),
 
-      // LeftAlignmentButton(),
-      // CenterAlignmentButton(),
-      // RightAlignmentButton(),
+      ZefyrSpacer(),
 
-      // if (editor.colorDelegate != null) ...[
-      //   TextHighlightButton(),
-      //   TextColorButton(),
-      // ],
-      // if (editor.imageDelegate != null) ImageButton(),
-      // MarginButton(),
-      // // PaddingButton(), not working
+      BulletListButton(),
+
+      NumberListButton(),
 
       // LinkButton(),
       // HeadingButton(),
