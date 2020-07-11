@@ -18,6 +18,18 @@ import 'toolbar.dart';
 ///
 /// Toolbar buttons are normally created by a [ZefyrToolbarDelegate].
 class ZefyrButton extends StatelessWidget {
+  ZefyrButton.custom({
+    @required Widget child,
+    this.onPressed,
+  })  : assert(child != null),
+        action = null,
+        _icon = null,
+        _iconSize = null,
+        _text = null,
+        _textStyle = null,
+        _child = child,
+        super();
+
   /// Creates a toolbar button with any child because why restrict it?
   ZefyrButton.child({
     @required this.action,
@@ -85,6 +97,7 @@ class ZefyrButton extends StatelessWidget {
     final toolbar = ZefyrToolbar.of(context);
     final editor = toolbar.editor;
     final toolbarTheme = ZefyrTheme.of(context).toolbarTheme;
+    final color = _getColor(editor, toolbarTheme);
     final pressedHandler = _getPressedHandler(editor, toolbar);
     final iconColor = (pressedHandler == null)
         ? toolbarTheme.disabledIconColor
@@ -93,8 +106,8 @@ class ZefyrButton extends StatelessWidget {
       return RawZefyrButton(
         action: action,
         child: _child,
-        color: _getColor(editor, toolbarTheme),
-        onPressed: _getPressedHandler(editor, toolbar),
+        color: color,
+        onPressed: pressedHandler,
       );
     }
     if (_icon != null) {
@@ -103,8 +116,8 @@ class ZefyrButton extends StatelessWidget {
         icon: _icon,
         size: _iconSize,
         iconColor: iconColor,
-        color: _getColor(editor, toolbarTheme),
-        onPressed: _getPressedHandler(editor, toolbar),
+        color: color,
+        onPressed: pressedHandler,
       );
     } else {
       assert(_text != null);
@@ -113,8 +126,8 @@ class ZefyrButton extends StatelessWidget {
       return RawZefyrButton(
         action: action,
         child: Text(_text, style: style),
-        color: _getColor(editor, toolbarTheme),
-        onPressed: _getPressedHandler(editor, toolbar),
+        color: color,
+        onPressed: pressedHandler,
       );
     }
   }
@@ -144,6 +157,8 @@ class ZefyrButton extends StatelessWidget {
     } else if (action == ZefyrToolbarAction.hideKeyboard) {
       return () => editor.hideKeyboard();
     }
+
+    // print('unknown pressed handler');
 
     return null;
   }
@@ -537,7 +552,7 @@ class _SliderState extends State<_Slider> {
         // color: Colors.yellow,
         child: Stack(
       children: [
-        SizedBox(width: 40),
+        SizedBox(width: 50),
         Slider(
           value: _value,
           activeColor: theme.toolbarTheme.iconColor,

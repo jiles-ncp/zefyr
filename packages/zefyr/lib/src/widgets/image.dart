@@ -214,6 +214,7 @@ class RenderEditableImage extends RenderBox
   @override
   void performLayout() {
     assert(constraints.hasBoundedWidth);
+
     if (child != null) {
       // Make constraints use 16:9 aspect ratio.
       final width = constraints.maxWidth - kHorizontalPadding * 2;

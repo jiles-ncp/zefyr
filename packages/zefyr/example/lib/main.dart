@@ -33,7 +33,8 @@ class ZefyrApp extends StatelessWidget {
         }),
       debugShowCheckedModeBanner: false,
       title: 'Zefyr Editor',
-      home: HomePage(),
+      // home: HomePage(),
+      initialRoute: '/fullPage',
       routes: {
         '/fullPage': buildFullPage,
         '/form': buildFormPage,

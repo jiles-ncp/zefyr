@@ -55,6 +55,8 @@ class _ZefyrLineState extends State<ZefyrLine> {
         node: widget.node,
         text: buildText(context, scope),
       );
+      // content = Container(color: Colors.grey, child: content);
+
     }
 
     if (scope.isEditable) {
@@ -86,62 +88,44 @@ class _ZefyrLineState extends State<ZefyrLine> {
       content = CompositedTransformTarget(link: _link, child: content);
     }
 
-    if (widget.node.style.contains(NotusAttribute.align)) {
-      var alignment = MainAxisAlignment.start;
-      var att = widget.node.style.get<int>(NotusAttribute.align);
+    // var hasPadding = widget.node.style.contains(NotusAttribute.padding);
+    // // print('padding: $hasPadding');
 
-      if (att.value == 2) {
-        alignment = MainAxisAlignment.end;
-      }
+    // if (widget.node.style.contains(NotusAttribute.margin) ||
+    //     widget.node.style.contains(NotusAttribute.padding)) {
+    //   EdgeInsets margin;
+    //   EdgeInsets padding;
 
-      if (att.value == 3) {
-        alignment = MainAxisAlignment.center;
-      }
+    //   if (widget.node.style.contains(NotusAttribute.margin)) {
+    //     var att =
+    //         widget.node.style.get<Map<String, dynamic>>(NotusAttribute.margin);
 
-      content = Row(
-        mainAxisAlignment: alignment,
-        children: [content],
-      );
-    }
+    //     margin = EdgeInsets.fromLTRB(
+    //       (att.value['left'] ?? 0).toDouble(),
+    //       (att.value['top'] ?? 0).toDouble(),
+    //       (att.value['right'] ?? 0).toDouble(),
+    //       (att.value['bottom'] ?? 0).toDouble(),
+    //     );
+    //   }
 
-    var hasPadding = widget.node.style.contains(NotusAttribute.padding);
-    // print('padding: $hasPadding');
+    //   if (widget.node.style.contains(NotusAttribute.padding)) {
+    //     var att =
+    //         widget.node.style.get<Map<String, dynamic>>(NotusAttribute.padding);
 
-    if (widget.node.style.contains(NotusAttribute.margin) ||
-        widget.node.style.contains(NotusAttribute.padding)) {
-      EdgeInsets margin;
-      EdgeInsets padding;
+    //     padding = EdgeInsets.fromLTRB(
+    //       (att.value['left'] ?? 0).toDouble(),
+    //       (att.value['top'] ?? 0).toDouble(),
+    //       (att.value['right'] ?? 0).toDouble(),
+    //       (att.value['bottom'] ?? 0).toDouble(),
+    //     );
+    //   }
 
-      if (widget.node.style.contains(NotusAttribute.margin)) {
-        var att =
-            widget.node.style.get<Map<String, dynamic>>(NotusAttribute.margin);
-
-        margin = EdgeInsets.fromLTRB(
-          (att.value['left'] ?? 0).toDouble(),
-          (att.value['top'] ?? 0).toDouble(),
-          (att.value['right'] ?? 0).toDouble(),
-          (att.value['bottom'] ?? 0).toDouble(),
-        );
-      }
-
-      if (widget.node.style.contains(NotusAttribute.padding)) {
-        var att =
-            widget.node.style.get<Map<String, dynamic>>(NotusAttribute.padding);
-
-        padding = EdgeInsets.fromLTRB(
-          (att.value['left'] ?? 0).toDouble(),
-          (att.value['top'] ?? 0).toDouble(),
-          (att.value['right'] ?? 0).toDouble(),
-          (att.value['bottom'] ?? 0).toDouble(),
-        );
-      }
-
-      content = Container(
-        margin: margin,
-        padding: padding,
-        child: content,
-      );
-    }
+    //   content = Container(
+    //     margin: margin,
+    //     padding: padding,
+    //     child: content,
+    //   );
+    // }
 
     if (widget.padding != null) {
       return Padding(padding: widget.padding, child: content);
@@ -180,6 +164,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
 
   TextSpan buildText(BuildContext context, ZefyrScope scope) {
     final theme = ZefyrTheme.of(context);
+
     final children = widget.node.children
         .map((node) => _segmentToTextSpan(node, theme, scope))
         .toList(growable: false);
@@ -256,6 +241,15 @@ class _ZefyrLineState extends State<ZefyrLine> {
       return ZefyrHorizontalRule(node: node);
     } else if (embed.type == EmbedType.image) {
       return ZefyrImage(node: node, delegate: scope.imageDelegate);
+    } else if (embed.type == EmbedType.custom) {
+      // return Container(
+      //   width: 200,
+      //   height: 200,
+      //   color: Colors.blue,
+      // );
+      print('here');
+      return Container(height: 10);
+      // return Container(node: node, delegate: scope.imageDelegate);
     } else {
       throw UnimplementedError('Unimplemented embed type ${embed.type}');
     }
